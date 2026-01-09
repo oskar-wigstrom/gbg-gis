@@ -49,9 +49,30 @@ class NetworkXRouter:
             nodes, edges = osm.get_network(network_type=network_type, nodes=True)
             if nodes is None or edges is None or nodes.empty or edges.empty:
                 raise RuntimeError(f"No network data found in {self.pbf_path} for type '{network_type}'")
+
+            # Normalize nodes: ensure index is node id and x/y exist for OSMnx
+            if nodes.index.name != "id":
+                if "id" in nodes.columns:
+                    nodes = nodes.set_index("id")
+                else:
+                    raise RuntimeError("Nodes DataFrame missing 'id' index and column.")
+            if "x" not in nodes.columns or "y" not in nodes.columns:
+                if "lon" in nodes.columns and "lat" in nodes.columns:
+                    nodes = nodes.assign(x=nodes["lon"], y=nodes["lat"])
+                else:
+                    raise RuntimeError("Nodes DataFrame missing coordinates: expected 'x'/'y' or 'lon'/'lat'.")
+
+            # Normalize edges: require u/v, generate key per parallel edge, set MultiIndex
+            if "u" not in edges.columns or "v" not in edges.columns:
+                raise RuntimeError("Edges DataFrame missing 'u'/'v' columns.")
+            if "key" not in edges.columns:
+                edges = edges.assign(key=edges.groupby(["u", "v"]).cumcount())
+            edges = edges.set_index(["u", "v", "key"])
+
             G = ox.graph_from_gdfs(nodes, edges, graph_attrs={"crs": nodes.crs})
             with cache_file.open("wb") as f:
                 pickle.dump(G, f)
+
         self.graphs[key] = G
         return G
 

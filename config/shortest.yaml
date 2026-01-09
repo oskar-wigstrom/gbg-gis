@@ -1,0 +1,31 @@
+# Shortest path distance configurations
+# Each entry defines a distance query point that will be computed and stored
+
+queries:
+  - name: "astra-zeneca"           # Filename (without extension) and DB column suffix
+    db_column: "dist_az"           # Column name in database for this distance
+    # Either use coordinates directly:
+    lat: 57.64340606889388
+    lon: 12.020160559629595
+
+  - name: "campx"
+    db_column: "dist_campx"
+    lat: 57.6876
+    lon: 11.9787
+
+  # Example with multiple queries sharing the same column (creates array)
+  - name: "molndal-center"
+    db_column: "dist_molndal"      # Same column name = array
+    lat: 57.6554
+    lon: 12.0134
+
+  - name: "molndal-galleria"
+    db_column: "dist_molndal"      # Same column name = array
+    lat: 57.6521
+    lon: 12.0089
+
+  # Example with address instead of coordinates:
+  # - name: "liseberg"
+  #   db_column: "dist_liseberg"
+  #   address: "Liseberg, Göteborg"
+
