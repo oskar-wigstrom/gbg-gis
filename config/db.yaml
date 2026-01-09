@@ -1,0 +1,10 @@
+postgres:
+  user: gisuser
+  password: gispass
+  host: localhost
+  port: 5432
+  database: gisdb
+
+data:
+  dir: data
+  pbf_path: data/gothenburg-latest.osm.pbf

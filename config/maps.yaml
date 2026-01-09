@@ -1,0 +1,5 @@
+maps:
+  - place: "Gothenburg, Sweden"
+    network_type: all
+    pbf_path: data/sweden-latest.osm.pbf
+    bounding_box: [11.6, 57.55, 12.3, 57.9]

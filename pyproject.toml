@@ -1,6 +1,25 @@
 [project]
-name = "gbg-gis"
+name = "gbg_gis"
 version = "0.1.0"
 description = "Add your description here"
-requires-python = ">=3.14"
-dependencies = []
+requires-python = ">=3.10"
+dependencies = [
+    "osmnx",
+    "geopandas",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "pyyaml",
+    "pyrosm",
+    "geoalchemy2",
+    "numpy",
+    "pandas-stubs",
+    "pyrosm",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["gbg_gis"]
